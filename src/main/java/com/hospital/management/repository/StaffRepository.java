@@ -12,5 +12,7 @@ import com.hospital.management.model.Staff;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 	Optional<Staff> findByStaffId(UUID staffId);
 
+	Optional<Staff> findByName(String name);
+
 	boolean existsStaffByStaffId(UUID staffId);
 }
