@@ -23,7 +23,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Patient extends BaseModel<Patient> implements Serializable {
-	@Column(name = "description")
+	@Column(name = "name")
 	private String name;
 	@Column(name = "age")
 	private int age;

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,9 +24,8 @@ public class AppUtils {
 		return pageable;
 	}
 
-	public static byte[] generateExcelFile(Patient patient, String filename) {
+	public static File generateExcelFile(Patient patient, String filename) {
 		File file = new File(filename);
-		byte[] data;
 		try {
 			FileWriter outputfile = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(outputfile);
@@ -41,12 +39,11 @@ public class AppUtils {
 			writer.writeAll(allData);
 			writer.flush();
 			writer.close();
-			data = FileUtils.readFileToByteArray(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ServiceCustomException(HttpStatus.BAD_REQUEST,
 					"Sorry, unable to generate report! Try again later");
 		}
-		return data;
+		return file;
 	}
 }

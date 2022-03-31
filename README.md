@@ -1,4 +1,4 @@
-# Back-end Practical Test : OZE Hospital Management System Challenge.
+# Back-end Practical Test : (OZE) Hospital Management System Challenge.
 
 This is the service for the Software Engineer Exercise.
 
@@ -16,8 +16,8 @@ allow it to execute or you can navigate to the test package and execute the test
 The application will run on port 8092
 
 ## Documentation
-Postman documentation was used for this service
+Postman documentation was used for this service, Find the link below.
 
-http://localhost:8092/swagger-ui.html#/
+https://documenter.getpostman.com/view/14924131/UVyq1cu3
 
 Please reach out to me for any question or clarification (Frank Okafor).

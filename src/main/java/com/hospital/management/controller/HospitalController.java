@@ -1,9 +1,9 @@
 package com.hospital.management.controller;
 
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
@@ -55,7 +55,7 @@ public class HospitalController {
 	}
 
 	@GetMapping(value = "{staffId}/downloadPatientDetail", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<InputStream> downloadPatientDetail(@PathVariable("staffId") String staffId,
+	public ResponseEntity<Resource> downloadPatientDetail(@PathVariable("staffId") String staffId,
 			@RequestParam(value = "patientId", required = true) Long patientId) {
 		return hospitalService.downloadPatientDetail(staffId, patientId);
 	}

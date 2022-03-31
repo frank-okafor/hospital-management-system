@@ -1,17 +1,19 @@
 package com.hospital.management.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import com.hospital.management.data.ServiceResponse;
 import com.hospital.management.exception.ServiceCustomException;
@@ -57,19 +59,22 @@ public class HospitalServiceImpl implements HospitalService {
 	}
 
 	@Override
-	public ResponseEntity<InputStream> downloadPatientDetail(String staffId, Long patientId) {
+	public ResponseEntity<Resource> downloadPatientDetail(String staffId, Long patientId) {
 		if (!validateStaff(staffId)) {
 			throw new ServiceCustomException(HttpStatus.BAD_REQUEST, "invalid staff id");
 		}
 		return patientRepository.findById(patientId).map(patient -> {
 			String fileName = "patient-report.csv";
-			byte[] data = AppUtils.generateExcelFile(patient, fileName);
-			String headerValue = String.format("attachment; filename=\"%s\"", fileName);
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Content-Disposition", headerValue);
-			headers.add("Content-Type", "application/octet-stream");
-			InputStream myInputStream = new ByteArrayInputStream(data);
-			return new ResponseEntity<InputStream>(myInputStream, headers, HttpStatus.OK);
+			File file = AppUtils.generateExcelFile(patient, fileName);
+			Resource resource = null;
+			try {
+				resource = new UrlResource(file.toURI());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/octet-stream"))
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+					.body(resource);
 		}).orElseThrow(() -> new ServiceCustomException(HttpStatus.NOT_FOUND,
 				"patient with id " + patientId + " does not exist"));
 	}

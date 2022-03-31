@@ -1,9 +1,9 @@
 package com.hospital.management.service;
 
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +19,7 @@ public interface HospitalService {
 
 	ServiceResponse<Page<Patient>> getPatientsByAgeRange(String staffId, int ageRange, int pageNumber, int pageSize);
 
-	ResponseEntity<InputStream> downloadPatientDetail(String staffId, Long patientId);
+	ResponseEntity<Resource> downloadPatientDetail(String staffId, Long patientId);
 
 	ServiceResponse<List<Patient>> deletePatientProfileByDateRange(String staffId, LocalDate fromDate,
 			LocalDate toDate);
